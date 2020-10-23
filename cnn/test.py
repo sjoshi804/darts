@@ -82,9 +82,11 @@ def infer(test_queue, model, criterion):
  
   with torch.no_grad():
       for step, (input, target) in enumerate(test_queue):
+        input = input.cuda()
+        target = target.cuda()
+        
         logits, _ = model(input)
         loss = criterion(logits, target)
-
         prec1, prec5 = utils.accuracy(logits, target, topk=(1, 5))
         n = input.size(0)
         objs.update(loss.data, n)
