@@ -84,7 +84,8 @@ def infer(test_queue, model, criterion):
       for step, (input, target) in enumerate(test_queue):
         logits, _ = model(input)
         loss = criterion(logits, target)
-
+        input = input.cuda()
+        target = target.cuda()
         prec1, prec5 = utils.accuracy(logits, target, topk=(1, 5))
         n = input.size(0)
         objs.update(loss.data, n)
